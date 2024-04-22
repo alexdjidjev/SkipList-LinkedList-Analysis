@@ -1,4 +1,5 @@
 #include "linked_list.h"
+#include <iostream>
 
 
 // -------------- LinkedListIterator Functions -------------- //
@@ -171,6 +172,16 @@ void LinkedList<T>::insert(LinkedListIterator<T> iter, const T& value) {
     iter->next = tmp;
     numElements++;
     tmp = nullptr;
+}
+
+template <typename T>
+void LinkedList<T>::insertInAscndOrder(const T& value) {
+    LinkedListNode<T>* iter = head;
+    while (iter->data < value && iter->next != nullptr) {
+        iter = iter->next;
+    }
+    insert(iter, value);
+    iter = nullptr;
 }
 
 template <typename T>

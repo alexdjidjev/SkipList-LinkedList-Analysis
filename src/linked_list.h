@@ -85,6 +85,10 @@ class LinkedList {
         // Post: Inserted value will come before element pointed to by 'iter'.
         void insert(LinkedListIterator<T> iter, const T& value);
 
+        // Desc: Inserts 'value' in appropriate place 
+        // such that list is in ascending order.
+        void insertInAscndOrder(const T& value);
+
         // Desc: Set element pointed to by 'iter' to 'value'.
         void set(LinkedListIterator<T> iter, const T& value);
 
