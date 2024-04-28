@@ -36,7 +36,6 @@ class LinkedListIterator {
 template <typename T>
 class LinkedList {
     public:
-        
         // Constructor
         LinkedList();
 
@@ -58,11 +57,14 @@ class LinkedList {
         LinkedListIterator<T> getHead() const;
 
         // Desc: Returns the data stored at node pointed to be 'pos'.
-        T getElem(LinkedListIterator<T> pos);
+        T getElem(LinkedListIterator<T> pos) const;
 
         // Desc: Returns iterator to first node containing 'value'.
         // Returns nullptr if 'value' isn't in the list.
-        LinkedListIterator<T> find(const T &value);
+        LinkedListIterator<T> find(const T &value) const;
+
+        // Desc: Prints out each element in list.
+        void print() const;
 
     // ------- Mutator Functions ------- //
 
@@ -96,8 +98,9 @@ class LinkedList {
         // Post: If list is size 0, then no change.
         void remove(const T& value);
 
+        // WILL NOT BE USED AS OF NOW (delete it when finished)
         // Desc: Returns a new list with all elements at and after the splicePoint in calling list object.
-        LinkedList<T> spliceAfter(LinkedListIterator<T> splicePoint);
+        LinkedList<T>* spliceAfter(LinkedListIterator<T> splicePoint);
         
     private:
         LinkedListNode<T>* head = nullptr;
@@ -108,5 +111,4 @@ class LinkedList {
 
 
 
-//#include "linked_list.hpp"
 #endif

@@ -40,6 +40,11 @@ class Event {
         // Desc: Returns true if current object's timestamp is greater than rhs's timestamp.
         bool operator>(const Event& rhs) const;
 
+        // Logical Equals Operator Overload
+        // Desc: Returns true if current object's time vars is equal to rhs's time.
+        // Converts hours and minutes vars to a minute timestamp and compares that value. 
+        bool operator==(const Event& rhs) const; 
+
     private:
         std::string name;
         int hours;
@@ -51,5 +56,7 @@ std::ostream& operator<<(std::ostream& os, const Event& evnt);
 
 // Extraction Operator Overload
 std::istream& operator>>(std::istream& is, Event& evnt);
+
+
 
 #endif

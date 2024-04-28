@@ -96,21 +96,31 @@ LinkedListIterator<T> LinkedList<T>::getHead() const {
 }
 
 template <typename T>
-T LinkedList<T>::getElem(LinkedListIterator<T> pos) {
+T LinkedList<T>::getElem(LinkedListIterator<T> pos) const {
     return pos->data;
 }
 
 template <typename T>
-LinkedListIterator<T> LinkedList<T>::find(const T& value) {
+LinkedListIterator<T> LinkedList<T>::find(const T& value) const {
     LinkedListIterator<T> iter = head;
     while (iter->next != nullptr) {
         if (value == iter->data) {
+            std::cout << "Value in LinkedList FOUND!" << std::endl;
             return iter;
         }
         iter = iter->next;
     }
-
+    std::cout << "Value in LinkedList NOT FOUND!" << std::endl;
     return nullptr;
+}
+
+template <typename T>
+void LinkedList<T>::print() const {
+    LinkedListIterator<T> currentNode = head;
+    while (currentNode->next != nullptr) {
+        std::cout << currentNode->data << std::endl;
+        currentNode = currentNode->next;
+    }
 }
 
 // ------- Mutator Functions ------- //
@@ -210,11 +220,11 @@ void LinkedList<T>::remove(const T& value) {
 }
 
 template <typename T>
-LinkedList<T> LinkedList<T>::spliceAfter(LinkedListIterator<T> splicePoint) {
-    LinkedList<T> newList = new LinkedList<T>;
+LinkedList<T>* LinkedList<T>::spliceAfter(LinkedListIterator<T> splicePoint) {
+    LinkedList<T>* newList = new LinkedList<T>;
     LinkedListIterator<T> iter = splicePoint;
     while (iter->next != nullptr) {
-        newList.pushBack(iter->data);
+        newList->pushBack(iter->data);
     }
     iter = nullptr;
     return newList;

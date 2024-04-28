@@ -58,6 +58,10 @@ bool Event::operator>(const Event& rhs) const {
     return this->getTimestamp() > rhs.getTimestamp();
 }
 
+bool Event::operator==(const Event& rhs) const {
+    return this->getTimestamp() == rhs.getTimestamp();
+}
+
 std::ostream& operator<<(std::ostream& os, const Event& evnt) {
     os << evnt.getName() << ", "
        << evnt.getTimestamp();

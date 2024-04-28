@@ -1,9 +1,13 @@
 #include <iostream>
 #include <fstream>
+#include <cstdlib>
+#include <ctime>
 #include "event.h"
 #include "linked_list.hpp"
+#include "skip_list.hpp"
 
 int main() {
+    srand(time(NULL));
     /*
     Event eventArr[100];
     for (int i = 0; i < 100; i++) {
@@ -119,17 +123,57 @@ int main() {
             break;
     }
     
-    LinkedList<Event> testList;
+    
+    // Creating a tester LinkedList.
+    LinkedList<Event> testerLinkedList;
+
+    // Creating a tester SkipList.
+    int maxLevelsSkipList = 3;
+    SkipList<Event> testerSkipList(maxLevelsSkipList);
+    
+    // Reading in all events from benchmark file and inserting in both lists.
     Event insertionEvent;
-    
     while (benchmarkFile >> insertionEvent) {
-        testList.insertInAscndOrder(insertionEvent);
+        testerLinkedList.insertInAscndOrder(insertionEvent);
+        testerSkipList.insert(insertionEvent);
     }
     
-    
-    for (int i = 0; i < testList.getSize(); i++) {
-        testList.getElem(testList.getHead()+i).printDetails();
+    // Displaying linked list elements.
+    std::cout << "\n############################\n## DISPLAYING LINKED LIST ##\n############################" << std::endl;
+    testerLinkedList.print();
+
+    // Displaying skip list elements.
+    std::cout << "\n##########################\n## DISPLAYING SKIP LIST ##\n##########################" << std::endl;
+    for (int i = 0; i < maxLevelsSkipList; i++) {
+        std::cout << std::endl;
+        testerSkipList.printOnLevel(i+1);
     }
+
+
+    std::cout << "\n--------------- Finding Specific Element ---------------" << std::endl;
+
+    // Details of event to be found in lists. (Is adjusted based on which benchmark file chosen)
+    const std::string eventToBeFoundName = "EventToBeFound";
+    int eventToBeFoundTimeStamp;
+
+    std::cout << "\nEnter search Event's minute timestamp: ";
+    std::cin >> eventToBeFoundTimeStamp;
+
+    // Creating an object of the event to be found. 
+    Event eventToBeFound(eventToBeFoundName, eventToBeFoundTimeStamp);
+
+    // Searching both lists for eventToBeFound.
+    LinkedListIterator<Event> eventToBeFoundPos_LinkedList = testerLinkedList.find(eventToBeFound);
+    SkipListNode<Event>* eventToBeFoundPos_SkipList = testerSkipList.find(eventToBeFound);
+
+    std::cout << "\nLinked List Element Display:" << std::endl;
+    testerLinkedList.getElem(eventToBeFoundPos_LinkedList).printDetails();
+
+    std::cout << "\nSkip List Element Display:" << std::endl;
+    testerSkipList.getElem(eventToBeFoundPos_SkipList).printDetails();
+    
+
+
 
 
     return 0;
