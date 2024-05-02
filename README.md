@@ -10,3 +10,5 @@ The **insert** and **find** procedures are analyzed both analytically and empiri
 `benchmarks` contains the pre-existing datasets used to test the lists' operations and cpp source files used to generate them.
 
 `src` contains LinkedList and SkipList class implementations along with `main` which executes the desired list operations.
+
+For running the main program, in `src` directory compile needed files using `$ g++ main.cpp event.cpp linked_list.hpp skip_list.hpp -o main.out`. Then run `$ ./main.out`.
