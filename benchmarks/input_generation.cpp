@@ -3,7 +3,6 @@
 #include <cstdlib>
 #include <ctime>
 #include "input_generation.h"
-//#include "../src/event.h"
 
 
 int main() {
