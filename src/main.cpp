@@ -1,3 +1,8 @@
+// FILE CONTAINS: LinkedList and SkipList objects
+// where data from the benchmark files is inputted 
+// and tested.
+
+
 #include <iostream>
 #include <fstream>
 #include <cstdlib>
@@ -6,39 +11,34 @@
 #include "linked_list.hpp"
 #include "skip_list.hpp"
 
+
 int main() {
     srand(time(NULL));
-    /*
-    Event eventArr[100];
-    for (int i = 0; i < 100; i++) {
-        Event ev("event" + std::to_string(i), 5, 59);
-        eventArr[i] = ev;
-    }
 
-    for (int i = 0; i < 100; i++) {
-       std::cout << eventArr[i] << "\n" << std::endl;
-    }
+    // ------- INPUT BENCHMARK FILE TYPES ------- //
 
+	/*
+	// ------ 3 Size Options ------ //
+		- small (71 elements) 	('S')
+		- medium (143 elements) ('M')
+		- large (719 elements) 	('L')
 
-    LinkedList<Event> L1;
-    for (int i = 0; i < 100; i++) {
-        Event ev("event" + std::to_string(i), 20, 22);
-        L1.pushBack(ev);
-    }
-    
-    //std::cout << L1.getElem(L1.getHead()) << std::endl;
-    // std::cout << L1.getElem(L1.getHead()+100) << std::endl;
-    
-    std::cout << "start of printing list" << std::endl;
-    for (int i = 0; i < 100; i++) {  
-        std::cout << L1.getElem(L1.getHead()+i) << "\n" << std::endl;
-    }   
-    
-    std::cout << "hello world" << std::endl;
-    */
+	// ------ 3 Sortedness Options ------ //
+		- sorted ascending 	('A')
+		- random 			('R')
+		- sorted descending ('D')
+	*/
 
+    // NOTE: Each "event" or element that will be stored in the 
+    // lists from the input files will be named in this format: 
+    // 
+    // TEST_<SIZE>_<SORTEDNESS>_<EVENT NUM>, <TIMESTAMP IN MINUTES>.
+    // 
+    // e.g. An element from the small random .txt file with an event
+    // number of 39 and timestamp of 120 minutes will be named as follows: 
+    // 
+    // TEST_S_R_39, 120
 
-    
     std::ifstream benchmarkFile;
     char benchmarkSize;
     char benchmarkSort;
@@ -53,6 +53,7 @@ int main() {
     << "Sortedness: ";
     std::cin >> benchmarkSort;
 
+    // Assigning correct input file path to 'benchmarkFile'. 
     switch (benchmarkSize)
     {
         case 'S':
@@ -101,7 +102,7 @@ int main() {
             switch (benchmarkSort)
             {
                 case 'A':
-                    benchmarkFile = std::ifstream("../benchmarks/large_inputs/_ascend.txt");
+                    benchmarkFile = std::ifstream("../benchmarks/large_inputs/l_ascend.txt");
                     break;
                 
                 case 'R':
@@ -123,15 +124,18 @@ int main() {
             break;
     }
     
-    
+
+// ----------------------- Start of List Creation and Testing ----------------------- //  
+ 
+
     // Creating a tester LinkedList.
     LinkedList<Event> testerLinkedList;
 
     // Creating a tester SkipList.
-    int maxLevelsSkipList = 3;
+    int maxLevelsSkipList = 5;
     SkipList<Event> testerSkipList(maxLevelsSkipList);
     
-    // Reading in all events from benchmark file and inserting in both lists.
+    // Reading in all events from benchmark file and INSERTING in both lists.
     Event insertionEvent;
     while (benchmarkFile >> insertionEvent) {
         testerLinkedList.insertInAscndOrder(insertionEvent);
@@ -149,6 +153,12 @@ int main() {
         testerSkipList.printOnLevel(i+1);
     }
 
+    // Displaying number of elements on each level in the SkipList.
+    for (int i = 0; i < maxLevelsSkipList; i++) {
+        std::cout << "\n#########################################" << std::endl;
+        std::cout << "## Number of Elements on Level " << i+1 << " = " << testerSkipList.numElemsOnLevel(i+1) << " ##" << std::endl;
+        std::cout << "#########################################" << std::endl;
+    }
 
     std::cout << "\n--------------- Finding Specific Element ---------------" << std::endl;
 
@@ -162,7 +172,7 @@ int main() {
     // Creating an object of the event to be found. 
     Event eventToBeFound(eventToBeFoundName, eventToBeFoundTimeStamp);
 
-    // Searching both lists for eventToBeFound.
+    // SEARCHING BOTH LISTS for eventToBeFound.
     LinkedListIterator<Event> eventToBeFoundPos_LinkedList = testerLinkedList.find(eventToBeFound);
     SkipListNode<Event>* eventToBeFoundPos_SkipList = testerSkipList.find(eventToBeFound);
 
@@ -172,9 +182,6 @@ int main() {
     std::cout << "\nSkip List Element Display:" << std::endl;
     testerSkipList.getElem(eventToBeFoundPos_SkipList).printDetails();
     
-
-
-
 
     return 0;
 }

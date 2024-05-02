@@ -97,10 +97,7 @@ class LinkedList {
         // Desc: Removes all elements in list that are equal to 'value'.
         // Post: If list is size 0, then no change.
         void remove(const T& value);
-
-        // WILL NOT BE USED AS OF NOW (delete it when finished)
-        // Desc: Returns a new list with all elements at and after the splicePoint in calling list object.
-        LinkedList<T>* spliceAfter(LinkedListIterator<T> splicePoint);
+        
         
     private:
         LinkedListNode<T>* head = nullptr;

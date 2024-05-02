@@ -35,19 +35,27 @@ SkipList<T>::SkipList(const int& numMaxLevels) {
 // Destructor
 template <typename T>
 SkipList<T>::~SkipList() {
-
+    clear();
+    delete head->next[0]; // Deletes Sentinel Node
+    head->next[0] = nullptr;
+    delete head; // Deletes Head Node
 }
 
 // Assignment Operator Overload
 template <typename T>
 SkipList<T>& SkipList<T>::operator=(const SkipList<T>& rhs) {
-
+    // Not currently implemented due to chosen 
+    // analysis not requiring assignment of SkipLists.
+    // Instantiation through constructor is used. 
+    // Future work will implement this.
 }
 
 // Copy Constructor
 template <typename T>
 SkipList<T>::SkipList(const SkipList<T>& rhs) {
-
+    // Not currently implemented due to chosen 
+    // analysis not requiring copying of SkipLists.
+    // Future work will implement this.
 }
 
 // ------- Accessor Functions ------- //
@@ -98,19 +106,28 @@ void SkipList<T>::printOnLevel(const int level) const {
     }
 }
 
+template <typename T>
+int SkipList<T>::numElemsOnLevel(const int level) const {
+    int numElemsOnLevel = 0;
+    int i = level-1;
+    SkipListNode<T>* currentNode = head->next[i];
+    while (currentNode->next[i] != nullptr) {
+        numElemsOnLevel++;
+        currentNode = currentNode->next[i];
+    }
+    return numElemsOnLevel;
+}
+
 // ------- Mutator Functions ------- //
 
 template <typename T>
 void SkipList<T>::insert(const T& value) {
-    //std::cout << "first" << std::endl;
+    numElements++;
     SkipListNode<T>* currentNode = head;
     int i = maxLevels - 1;
 
+    // Finding all predecessors to the spot where 'value' should go.
     SkipListNode<T>** predecessorNodes = new SkipListNode<T>*[maxLevels];
-
-    //std::cout << "second" << std::endl;
-
-    // Finding 
     while (i >= 0) {
         while (currentNode->next[i]->data < value && currentNode->next[i]->next[i] != nullptr) {
             currentNode = currentNode->next[i];
@@ -118,7 +135,6 @@ void SkipList<T>::insert(const T& value) {
         predecessorNodes[i] = currentNode; // Adds the predecessor of 'value' on the ith level.
         i--;
     }
-    //std::cout << "found" << std::endl;
 
     // Creating new node with 'data' equal to 'value'.
     SkipListNode<T>* newNode = new SkipListNode<T>;
@@ -128,13 +144,10 @@ void SkipList<T>::insert(const T& value) {
     // is the newNode's height ("number of levels", or 
     // size of newNode's 'next' array of pointers.).
     int heads = 1;
-    while (rand() % 100 < 50 && heads < maxLevels)
+    while (rand() % 100 < 100*coinProbability && heads < maxLevels)
         heads++;
-
     newNode->numLevels = heads;
     newNode->next = new SkipListNode<T>*[heads];
-
-    //std::cout << "num levels generated for " << value << " is: " << newNode->numLevels << std::endl;
 
     // Redirecting newNode's predecessor's 'next' pointers
     // to point to newNode while newNode's 'next' pointers
@@ -144,21 +157,45 @@ void SkipList<T>::insert(const T& value) {
         predecessorNodes[i]->next[i] = newNode;
         newNode->next[i] = temp;
     }
-    //std::cout << "hi" << std::endl;
 
     // Setting pointers back to nullptr.
     currentNode = nullptr;
-
     for (int i = 0; i < maxLevels; i++) {
         predecessorNodes[i] = nullptr;
     }
     predecessorNodes = nullptr;
-
     newNode = nullptr;
 
 }
 
 template <typename T>
 void SkipList<T>::erase(const SkipListNode<T>* pos) {
+    // Not currently implemented due to chosen 
+    // analysis not requiring erasure of elements.
+    // Future work will implement this.
+}
 
+template <typename T>
+void SkipList<T>::clear() {
+    int i = maxLevels - 1;
+    SkipListNode<T>* tmp1;
+    tmp1 = head->next[i];
+    while (i >= 0) {
+        while (tmp1 != nullptr) {
+            head->next[i] = nullptr;
+            head = tmp1;
+            tmp1 = head->next[i];
+        }
+        i--;
+    }
+    SkipListNode<T>* tmp2;
+    tmp2 = head->next[0];
+    while (tmp2 != nullptr) {
+        delete head->next[0];
+        head->next[0] = tmp2;
+        tmp2 = head->next[0];
+    }
+    tmp2 = nullptr;    
+    tmp1 = nullptr;  
+    numElements = 0;  
 }

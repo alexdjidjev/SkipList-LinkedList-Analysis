@@ -218,14 +218,3 @@ void LinkedList<T>::remove(const T& value) {
     iter = nullptr;
     temp = nullptr;
 }
-
-template <typename T>
-LinkedList<T>* LinkedList<T>::spliceAfter(LinkedListIterator<T> splicePoint) {
-    LinkedList<T>* newList = new LinkedList<T>;
-    LinkedListIterator<T> iter = splicePoint;
-    while (iter->next != nullptr) {
-        newList->pushBack(iter->data);
-    }
-    iter = nullptr;
-    return newList;
-}
