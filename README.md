@@ -1,4 +1,4 @@
-## event-scheduler-list-analysis
+## SkipList-LinkedList-Analysis
 This program is an analysis of the **LinkedList** and **SkipList** data structure implementations and the performance of important operations of each list. The scenario of a daily event scheduler application is used, where every element in each list is an event object with a name and time attribute. 
 
 The operations performed on the two lists will consist of 
